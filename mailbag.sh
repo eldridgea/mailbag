@@ -40,5 +40,11 @@ function first_run_check {
     fi
 }
 
-first_run_check
-process_file
+
+if [ "$#" -eq 1 ]; then
+    first_run_check
+    process_file
+else
+    echo "You need to pass in a input video file. e.g."
+    echo "$ ./mailbag.sh VIDEO.mp4"
+fi
