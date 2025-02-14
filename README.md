@@ -1,7 +1,7 @@
 # Mailbag #
 
 A small script to leverage `whisper` to auto subtitle a video and burn the subtitles in.
-Aimed at videos targeting verital video platforms like TikTok.
+Aimed at videos targeting vertical video platforms like TikTok.
 
 ## Instructions
 1. Ensure you have `python3`, `python3-venv`, and `ffmpeg` installed
