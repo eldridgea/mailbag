@@ -5,7 +5,7 @@ Aimed at videos targeting verital video platforms like TikTok.
 
 ## Instructions
 1. Ensure you have `python3`, `python3-venv`, and `ffmpeg` installed
-1. Clone the repository `git clone https://github.com/eldridgea/mailbag.git` or download the [bash script directly](https://raw.githubusercontent.com/eldridgea/mailbag/refs/heads/main/mailbag.sh)
+1. Clone this repository or download the [bash script directly](https://raw.githubusercontent.com/eldridgea/mailbag/refs/heads/main/mailbag.sh)
 1. Run `./mailbag.sh YOUR_VIDEO_FILE.MP4`
 
 
