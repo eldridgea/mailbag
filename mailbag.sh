@@ -1,6 +1,6 @@
 #!/bin/bash
 ##### Customize the settings in this section to format the subtitles  #####
-FONTSIZE=12
+FONTSIZE=10
 PRIMARYCOLOR="FFFFFF"
 FONTNAME="Arial"
 MARGINV=50
@@ -11,6 +11,23 @@ INPUT_FILE=$1
 OUTPUT_FILE="${INPUT_FILE%.*}_subtitled.${INPUT_FILE##*.}"
 CONFIG_DIR=$HOME/.config/mailbag
 ##### End enviornment settings #####
+
+function english_to_mandarin {
+    input=$1
+    translation=`curl -s http://localhost:11434/api/chat -d '{
+        "model": "7shi/llama-translate:8b-q4_K_M",
+         "messages": [
+             {
+                 "role": "user",
+                 "content": "### Instruction: Translate English to Mandarin. ### Input: $input ### Response:"
+             }
+         ],
+         "stream": false
+    }'`
+    echo "$translation" | jq '.message.content' | tr -d '"'
+}
+
+
 
 function process_file {
     mkdir .tmp
