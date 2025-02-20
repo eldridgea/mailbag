@@ -12,6 +12,18 @@ OUTPUT_FILE="${INPUT_FILE%.*}_subtitled.${INPUT_FILE##*.}"
 CONFIG_DIR=$HOME/.config/mailbag
 ##### End enviornment settings #####
 
+
+function create_mandarin_subtitle_file {
+    while IFS= read -r line; do
+        if [[ $line =~ ^[A-Za-z] ]]; then
+            echo "$line" >> .tmp/input_audio.zh.srt
+        else
+            echo $(english_to_mandarin "$line") >> .tmp/input_audio.zh.srt
+        fi
+    done < .tmp/input_audio.srt
+}
+
+
 function english_to_mandarin {
     input=$1
     translation=`curl -s http://localhost:11434/api/chat -d '{
@@ -37,8 +49,9 @@ function process_file {
     "$CONFIG_DIR/bin/whisper" .tmp/input_audio.wav --model medium --language English --task transcribe --output_format srt --output_dir .tmp >/dev/null 2>&1
     echo "Burning in subtitles..."
     ffmpeg -hide_banner -loglevel error -i "$INPUT_FILE"  -vf "subtitles=.tmp/input_audio.srt:force_style='Fontname=$FONTNAME,Fontsize=$FONTSIZE,PrimaryColour=&H$PRIMARYCOLOR&,BackColour=&H80000000&,BorderStyle=3,Alignment=2,MarginV=$MARGINV'" -c:a copy "$OUTPUT_FILE"
+    create_mandarin_subtitle_file
     echo "Cleaning up..."
-    rm -rf .tmp/
+    #rm -rf .tmp/
 }
 
 function first_run_check {
