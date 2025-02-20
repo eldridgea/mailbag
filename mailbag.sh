@@ -13,6 +13,16 @@ CONFIG_DIR=$HOME/.config/mailbag
 ##### End enviornment settings #####
 
 
+chat_gpt_generated_prepend_confirm() {
+    local input_file="$1"
+    local output_file="${input_file%.txt}_modified.txt"
+
+    awk '{if ($0 ~ /^[A-Za-z]/) print "CONFIRM " $0; else print $0}' "$input_file" > "$output_file"
+
+    echo "Modified file saved as: $output_file"
+}
+
+
 function create_mandarin_subtitle_file {
     while IFS= read -r line; do
         if [[ $line =~ ^[A-Za-z] ]]; then
