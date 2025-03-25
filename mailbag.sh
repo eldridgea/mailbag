@@ -1,9 +1,9 @@
 #!/bin/bash
 ##### Customize the settings in this section to format the subtitles  #####
-FONTSIZE=10
+FONTSIZE=8
 PRIMARYCOLOR="FFFFFF"
 FONTNAME="Arial"
-MARGINV=50
+MARGINV=70
 ##### End subtitle formatting #####
 
 ##### Enviornment settings #####
@@ -56,12 +56,12 @@ function process_file {
     echo "Extracting audio..."
     ffmpeg -hide_banner -loglevel error -i "$INPUT_FILE" -vn -acodec pcm_s16le -ar 16000 -ac 1 .tmp/input_audio.wav >/dev/null 2>&1
     echo "Transcribing..."
-    "$CONFIG_DIR/bin/whisper" .tmp/input_audio.wav --model medium --language English --task transcribe --output_format srt --output_dir .tmp >/dev/null 2>&1
+    "$CONFIG_DIR/bin/whisper" .tmp/input_audio.wav --model medium --language English --task transcribe --output_format srt --output_dir .tmp
     echo "Burning in subtitles..."
-    ffmpeg -hide_banner -loglevel error -i "$INPUT_FILE"  -vf "subtitles=.tmp/input_audio.srt:force_style='Fontname=$FONTNAME,Fontsize=$FONTSIZE,PrimaryColour=&H$PRIMARYCOLOR&,BackColour=&H80000000&,BorderStyle=3,Alignment=2,MarginV=$MARGINV'" -c:a copy "$OUTPUT_FILE"
+    ffmpeg -hide_banner -loglevel error -i "$INPUT_FILE"  -vf "subtitles=.tmp/input_audio.srt:force_style='Fontname=$FONTNAME,Fontsize=$FONTSIZE,PrimaryColour=&H$PRIMARYCOLOR&,BackColour=&H80000000&,BorderStyle=3,Alignment=2,MarginV=$MARGINV,MarginL=40,MarginR=40'" -c:a copy "$OUTPUT_FILE"
     create_mandarin_subtitle_file
     echo "Cleaning up..."
-    #rm -rf .tmp/
+    rm -rf .tmp/
 }
 
 function first_run_check {
